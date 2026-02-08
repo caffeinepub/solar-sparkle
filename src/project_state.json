@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Solar Sparkle app/website with homepage layout and mobile-related improvements.",
+  "architectural_notes": [],
+  "known_issues": [
+    "Page does not scroll to top after refresh or button click/navigation."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-ensure-the-page-always-scrolls-to-the-top-0-0-when-the-user-navigates-between-routes-via-button-link-clicks-including-navigation-triggered-by-header-and-footer-buttons-and-when-the-page-is-refreshed-reloaded-implement-this-globally-in-the-app-layout-router-layer-so-it-applies-to-all-pages",
+      "title": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-website-contact-information-displayed-in-the-footer-contact-section-to-exactly-head-office-kanpur-india-phone-91-81124-38846-hours-mon-sat-10-am-6-pm-email-official-solarsparkle-in-use-english-labels-and-ensure-formatting-remains-clean-and-responsive-on-mobile",
+      "title": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Force page to start at top on refresh and when navigating via button clicks (scroll restoration / scrollTo(0,0)).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Update Contact Information section to: Head Office Kanpur, India; +91 81124 38846; Mon-Sat 10 AM-6 PM; Email official@solarsparkle.in.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Solar Sparkle",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

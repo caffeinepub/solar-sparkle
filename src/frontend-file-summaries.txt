@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Main application component with routing configuration and ScrollToTop component integrated into the Layout to handle scroll behavior across all routes.",
+  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for managing consultancy form submissions, partner registrations, and fetching offerings/solutions data from the backend with proper cache invalidation.",
+  "frontend/src/components/Header.tsx": "Responsive navigation header with enhanced hover effects, smooth scale animations on menu items, improved mobile menu with better touch targets and padding, animated dropdowns, and interactive button highlights for improved user engagement.",
+  "frontend/src/components/Hero.tsx": "Landing hero section with Solar Sparkle branding, compelling headline, CTA buttons, statistics cards, and hero image.",
+  "frontend/src/components/Products.tsx": "Product showcase section displaying all four solar system types (On-Grid, Off-Grid, Hybrid, iTouch-A-Key) with images and descriptions from the backend.",
+  "frontend/src/components/ContactSection.tsx": "Contact form section with lead capture form, contact information cards, and background image.",
+  "frontend/src/components/CareerSection.tsx": "Career and franchise opportunities section with application form, benefits cards, and team image.",
+  "frontend/src/components/Footer.tsx": "Footer component with logo, social media links, quick navigation, product list, updated contact information (Kanpur office, phone, hours, email), and attribution to caffeine.ai.",
+  "frontend/src/index.css": "Global styles with OKLCH color system, enhanced with comprehensive animation utilities (fade-in, scale, float, parallax), hover effects (lift, scale, glow), icon animations (bounce, rotate), and mobile-optimized spacing for smooth transitions and interactive elements throughout the site.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended color tokens, responsive container padding, custom shadow effects (glow variants), and comprehensive animation keyframes for fade-in, scale, float, and pulse effects to support dynamic visual enhancements.",
+  "frontend/src/pages/SolarCalculatorPage.tsx": "Interactive solar calculator page with form inputs for user details and dynamic calculation results showing system size, costs, savings, and environmental benefits.",
+  "frontend/src/pages/HomePage.tsx": "Complete homepage with parallax scrolling on hero image, animated sections with fade-in effects, interactive hover states on all cards and buttons, motion graphics for icons, enhanced mobile responsiveness with proper spacing and scaled inputs, and smooth transitions throughout all three main sections.",
+  "frontend/src/pages/ResidentialSolarPage.tsx": "Residential solar page with animated hero section, interactive card hover effects with lift and glow animations, motion graphics for icons, enhanced mobile responsiveness with proper text scaling and spacing, and smooth transitions throughout all sections.",
+  "frontend/src/pages/ExpertConsultancyPage.tsx": "Expert consultancy page with animated hero section, enhanced form inputs with focus ring effects, interactive card hover states, properly scaled form elements for mobile devices, improved touch interactions, and smooth button animations with loading states.",
+  "frontend/src/components/ScrollToTop.tsx": "Global utility component that disables browser scroll restoration and forces scroll-to-top on mount and on every TanStack Router navigation event."
+}

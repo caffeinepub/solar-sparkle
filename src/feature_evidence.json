@@ -1,0 +1,44 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-ensure-the-page-always-scrolls-to-the-top-0-0-when-the-user-navigates-between-routes-via-button-link-clicks-including-navigation-triggered-by-header-and-footer-buttons-and-when-the-page-is-refreshed-reloaded-implement-this-globally-in-the-app-layout-router-layer-so-it-applies-to-all-pages",
+      "featureTitle": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/ScrollToTop.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-website-contact-information-displayed-in-the-footer-contact-section-to-exactly-head-office-kanpur-india-phone-91-81124-38846-hours-mon-sat-10-am-6-pm-email-official-solarsparkle-in-use-english-labels-and-ensure-formatting-remains-clean-and-responsive-on-mobile",
+      "featureTitle": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "files": [
+        "frontend/src/components/Footer.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

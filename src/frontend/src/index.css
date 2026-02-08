@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        --background: 0.99 0 0;
+        --foreground: 0.15 0 0;
+        --card: 1 0 0;
+        --card-foreground: 0.15 0 0;
+        --popover: 1 0 0;
+        --popover-foreground: 0.15 0 0;
+        --primary: 0.25 0 0;
+        --primary-foreground: 0.99 0 0;
+        --secondary: 0.96 0 0;
+        --secondary-foreground: 0.25 0 0;
+        --muted: 0.96 0 0;
+        --muted-foreground: 0.50 0 0;
+        --accent: 0.96 0 0;
+        --accent-foreground: 0.25 0 0;
+        --destructive: 0.58 0.24 27.33;
+        --destructive-foreground: 0.99 0 0;
+        --border: 0.92 0 0;
+        --input: 0.92 0 0;
+        --ring: 0.70 0 0;
+        
+        /* Navy blue, sky blue, and white color theme */
+        --navy-primary: 0.35 0.12 250;
+        --sky-primary: 0.75 0.10 220;
+        --sky-light: 0.95 0.03 220;
+        
+        --chart-1: 0.65 0.22 41.12;
+        --chart-2: 0.60 0.12 184.70;
+        --chart-3: 0.40 0.07 227.39;
+        --chart-4: 0.83 0.19 84.43;
+        --chart-5: 0.77 0.19 70.08;
+    }
+
+    .dark {
+        --background: 0.12 0 0;
+        --foreground: 0.99 0 0;
+        --card: 0.18 0 0;
+        --card-foreground: 0.99 0 0;
+        --popover: 0.22 0 0;
+        --popover-foreground: 0.99 0 0;
+        --primary: 0.92 0 0;
+        --primary-foreground: 0.18 0 0;
+        --secondary: 0.22 0 0;
+        --secondary-foreground: 0.99 0 0;
+        --muted: 0.22 0 0;
+        --muted-foreground: 0.70 0 0;
+        --accent: 0.30 0 0;
+        --accent-foreground: 0.99 0 0;
+        --destructive: 0.70 0.19 22.22;
+        --destructive-foreground: 0.18 0 0;
+        --border: 1 0 0 / 10%;
+        --input: 1 0 0 / 15%;
+        --ring: 0.55 0 0;
+        
+        /* Navy blue, sky blue theme for dark mode */
+        --navy-primary: 0.50 0.15 250;
+        --sky-primary: 0.80 0.12 220;
+        --sky-light: 0.25 0.05 220;
+        
+        --chart-1: 0.49 0.24 264.38;
+        --chart-2: 0.70 0.17 162.48;
+        --chart-3: 0.77 0.19 70.08;
+        --chart-4: 0.63 0.27 303.90;
+        --chart-5: 0.65 0.25 16.44;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer utilities {
+    .bg-grid-pattern {
+        background-image: 
+            linear-gradient(to right, oklch(var(--border)) 1px, transparent 1px),
+            linear-gradient(to bottom, oklch(var(--border)) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+    
+    /* Animation utilities */
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    .animate-fade-in-delay-1 {
+        animation: fadeIn 0.8s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+    
+    .animate-fade-in-delay-2 {
+        animation: fadeIn 0.8s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+    
+    .animate-fade-in-delay-3 {
+        animation: fadeIn 0.8s ease-out 0.6s forwards;
+        opacity: 0;
+    }
+    
+    .animate-scale-in {
+        animation: scaleIn 0.5s ease-out forwards;
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .animate-pulse-slow {
+        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* Parallax effect */
+    .parallax-slow {
+        transform: translateY(var(--parallax-offset, 0));
+        transition: transform 0.1s ease-out;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-glow {
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 30px rgba(117, 169, 255, 0.4);
+}
+
+/* Icon animations */
+.icon-bounce {
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.icon-rotate {
+    animation: iconRotate 3s linear infinite;
+}
+
+@keyframes iconRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+

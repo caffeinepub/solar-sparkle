@@ -1,0 +1,59 @@
+{
+  "kind": "build_request",
+  "title": "Fix scroll-to-top on navigation/refresh and update footer contact information",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-11",
+          "msg-13"
+        ],
+        "quotes": [
+          "WHEN EVER USER CLICK ON THE BUTTON IT WILL NOT START FROM THE TOP AFTER REFFERSING",
+          "yes"
+        ]
+      },
+      "acceptanceCriteria": [
+        "From any scroll position on any page, clicking any in-app navigation button/link (e.g., Header menu items, Footer offering/solution buttons) navigates to the new route and the viewport is positioned at the top of the page.",
+        "Refreshing/reloading a page while scrolled down results in the viewport loading at the top of the page (not restoring the previous scroll position).",
+        "Behavior works on both desktop and mobile viewports across all existing routes in frontend/src/App.tsx."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-11"
+        ],
+        "quotes": [
+          "AND UPGRADE THE CONTACT INFOR.  Head Office\nKanpur, India\n+91 81124 38846\nMon - Sat, 10 AM - 6 PM\nMAIL= OFFICIAL@solarsparkle.in"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Footer Contact section no longer shows the placeholder values (info@solarsparkle.com, +1 (555) 123-4567, etc.) and instead shows the provided Head Office location, phone number, hours, and email.",
+        "Email is displayed as \"official@solarsparkle.in\" (lowercase) and matches exactly.",
+        "Footer layout remains visually consistent with the existing design and does not overflow or break on small screens."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend/src/components/ui (read-only).",
+    "Do not modify the immutable authentication/actor hooks: frontend/src/hooks/useInternetIdentity.ts(x) and frontend/src/hooks/useActor.ts.",
+    "Keep all changes within the existing single React app and TanStack Router setup (no new backend services)."
+  ],
+  "nonGoals": [
+    "No changes to backend canister logic or data models.",
+    "No new pages or routes beyond addressing scroll restoration and footer contact content.",
+    "No third-party integrations (social links can remain as-is placeholders unless explicitly requested)."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

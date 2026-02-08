@@ -1,0 +1,44 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Global scroll-to-top on route navigation/refresh and footer contact info update",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement global scroll-to-top behavior on all in-app route navigations and on full page reloads across the TanStack Router app layout.",
+      "acceptanceCriteria": [
+        "From any scroll position on any page, clicking any in-app navigation button/link (e.g., Header menu items, Footer offering/solution buttons) navigates to the new route and the viewport is positioned at the top of the page.",
+        "Refreshing/reloading a page while scrolled down results in the viewport loading at the top of the page (not restoring the previous scroll position).",
+        "Behavior works on both desktop and mobile viewports across all existing routes in frontend/src/App.tsx."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ScrollToTop.tsx",
+          "operation": "create",
+          "description": "Create a small global utility component that listens to TanStack Router location changes and calls window.scrollTo(0, 0); also sets window.history.scrollRestoration = 'manual' and forces an initial scroll-to-top on mount to prevent scroll restoration on refresh/reload."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the new ScrollToTop component into the root Layout so it runs for all existing routes (including navigations triggered from Header/Footer buttons/links) without adding new routes or touching backend/auth hooks."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Replace the Footer Contact section placeholder values with the provided Head Office, phone, hours, and email in a clean, mobile-responsive format.",
+      "acceptanceCriteria": [
+        "The Footer Contact section no longer shows the placeholder values (info@solarsparkle.com, +1 (555) 123-4567, etc.) and instead shows the provided Head Office location, phone number, hours, and email.",
+        "Email is displayed as \"official@solarsparkle.in\" (lowercase) and matches exactly.",
+        "Footer layout remains visually consistent with the existing design and does not overflow or break on small screens."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Update the Contact list content to use English labels and exactly these values: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in; keep the existing responsive layout classes and ensure no overflow on small screens."
+        }
+      ]
+    }
+  ]
+}
