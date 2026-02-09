@@ -1,65 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T08:18:10.478Z",
+  "generatedAt": "2026-02-09T08:11:34.681Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
+        "summary": "In frontend/src/components/Footer.tsx, remove the footer hyperlink that points to https://caffeine.ai (the \"caffeine.ai\" anchor element with target=\"_blank\" and rel=\"noopener noreferrer\") from the copyright line.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
-          "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
-          "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
-          "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
-          "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/lib/branding.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/lib/branding.ts"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
-          "frontend/index.html"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
-          "frontend/index.html"
         ]
       }
     ]
@@ -69,14 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.html",
-    "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
-    "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
-    "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
-    "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/components/Header.tsx",
-    "frontend/src/lib/branding.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

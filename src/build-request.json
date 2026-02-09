@@ -1,96 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Upgrade Solar Sparkle logo and apply across header/footer",
+  "title": "Remove caffeine.ai link from site footer",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
+      "text": "In frontend/src/components/Footer.tsx, remove the footer hyperlink that points to https://caffeine.ai (the \"caffeine.ai\" anchor element with target=\"_blank\" and rel=\"noopener noreferrer\") from the copyright line.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-6"
         ],
         "quotes": [
-          "UPGRADE THIS LOGO AS"
+          "href=\"https://caffeine.ai\" \n              target=\"_blank\" \n              rel=\"noopener noreferrer\"\n              className=\"text-navy-primary hover:underline\"\n            > REMOVE THIS FROM THE FOOTER.TSX"
         ]
       },
       "acceptanceCriteria": [
-        "New logo files are produced as static images (PNG) with transparent background.",
-        "Logo appears crisp at small sizes (e.g., 32–48px height) without visible jagged edges or blurred artifacts.",
-        "Color palette is cohesive and modern (no muddy gradients or low-contrast details)."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "UPGRADE THIS LOGO AS"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Upgraded logo assets exist in frontend/public/assets/generated.",
-        "The app loads the logo assets via /assets/generated/... paths with no network calls besides static asset fetches."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "UPGRADE THIS LOGO AS"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Header (frontend/src/components/Header.tsx) uses the new generated logo asset path.",
-        "Footer (frontend/src/components/Footer.tsx) uses the new generated logo asset path.",
-        "Logo sizing remains visually balanced (no layout shift or overflow) on mobile and desktop breakpoints."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "UPGRADE THIS LOGO AS"
-        ]
-      },
-      "acceptanceCriteria": [
-        "A favicon image file exists in frontend/public (or another appropriate static location) and is referenced from frontend/index.html.",
-        "After build, the browser tab displays the new favicon."
+        "The rendered footer no longer contains any clickable link to https://caffeine.ai.",
+        "No reference to the string \"https://caffeine.ai\" remains in frontend/src/components/Footer.tsx.",
+        "The rest of the footer layout (including the copyright text, heart icon, and other links) continues to render without visual or runtime errors."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui or any paths listed in frontend.immutablePaths.",
-    "Keep backend unchanged; do not add new canisters/services or external dependencies."
+    "Do not edit any files under frontend/src/components/ui or any paths listed as immutable in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Redesigning site layout, copy, navigation, or marketing sections beyond what is necessary to swap logo assets.",
-    "Implementing new authentication, CMS, or backend storage related to branding."
+    "Do not change any other social links (Facebook, X, LinkedIn, Instagram).",
+    "Do not change footer styling beyond what is required to remove the caffeine.ai link.",
+    "Do not implement Privacy Policy/Terms pages (these can remain as placeholder href=\"#\")."
   ],
   "imageRequirements": {
-    "required": [
-      "Upgraded solar + panel emblem logo, transparent background (solar-sparkle-logo-mark-transparent.dim_512x512.png)",
-      "Upgraded horizontal logo lockup with emblem + wordmark on one line, transparent background (solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png)",
-      "Favicon derived from the upgraded emblem, transparent background (favicon-solar-sparkle.dim_64x64.png)"
-    ],
-    "edits": [
-      "Refine/modernize existing transparent logo mark while preserving concept (solar-sparkle-logo-transparent.dim_200x200.png > solar-sparkle-logo-transparent-v2.dim_200x200.png)"
-    ]
+    "required": [],
+    "edits": []
   },
   "userProfileUpdate": {
     "goalsToAdd": [],

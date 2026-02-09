@@ -4,38 +4,13 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Upgraded solar + panel emblem logo, transparent background (solar-sparkle-logo-mark-transparent.dim_512x512.png)\n- Upgraded horizontal logo lockup with emblem + wordmark on one line, transparent background (solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png)\n- Favicon derived from the upgraded emblem, transparent background (favicon-solar-sparkle.dim_64x64.png)\n\n## Edit Images\n- Refine/modernize existing transparent logo mark while preserving concept (solar-sparkle-logo-transparent.dim_200x200.png > solar-sparkle-logo-transparent-v2.dim_200x200.png)",
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-create-an-upgraded-solar-sparkle-logo-based-on-the-two-user-uploaded-references-image-12-png-only-logo-jpeg-keeping-the-same-recognizable-solar-panel-concept-but-with-cleaner-geometry-sharper-edges-consistent-stroke-widths-improved-contrast-and-transparent-background",
-      "title": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
+      "id": "feature-in-frontend-src-components-footer-tsx-remove-the-footer-hyperlink-that-points-to-https-caffeine-ai-the-caffeine-ai-anchor-element-with-target-blank-and-rel-noopener-noreferrer-from-the-copyright-line",
+      "title": "In frontend/src/components/Footer.tsx, remove the footer hyperlink that points to https://caffeine.ai (the \"caffeine.ai\" anchor element with target=\"_blank\" and rel=\"noopener noreferrer\") from the copyright line.",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-the-upgraded-logo-image-assets-to-the-frontend-as-static-files-under-frontend-public-assets-generated-and-ensure-no-runtime-backend-dependency-is-required-to-load-them",
-      "title": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-site-to-use-the-upgraded-logo-consistently-in-both-the-header-and-footer-replacing-the-current-header-logo-source-assets-solar-sparkle-removebg-preview-png-and-the-current-footer-logo-source-assets-generated-solar-sparkle-logo-transparent-dim-200x200-png",
-      "title": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-favicon-using-the-upgraded-logo-and-wire-it-into-the-html-head-so-browser-tabs-show-the-updated-branding",
-      "title": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
-      "reqIds": [
-        "REQ-4"
       ],
       "version": 1
     }
@@ -43,12 +18,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Upgrade the project logo (user requested logo upgrade; details TBD)",
+      "summary": "Remove the https://caffeine.ai link from Footer.tsx",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Upgrade Solar Sparkle logo and apply across header/footer",
+  "projectName": "Remove caffeine.ai link from site footer",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

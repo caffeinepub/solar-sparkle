@@ -2,9 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-an-upgraded-solar-sparkle-logo-based-on-the-two-user-uploaded-references-image-12-png-only-logo-jpeg-keeping-the-same-recognizable-solar-panel-concept-but-with-cleaner-geometry-sharper-edges-consistent-stroke-widths-improved-contrast-and-transparent-background",
-      "featureTitle": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
-      "files": [],
+      "featureId": "feature-in-frontend-src-components-footer-tsx-remove-the-footer-hyperlink-that-points-to-https-caffeine-ai-the-caffeine-ai-anchor-element-with-target-blank-and-rel-noopener-noreferrer-from-the-copyright-line",
+      "featureTitle": "In frontend/src/components/Footer.tsx, remove the footer hyperlink that points to https://caffeine.ai (the \"caffeine.ai\" anchor element with target=\"_blank\" and rel=\"noopener noreferrer\") from the copyright line.",
+      "files": [
+        "frontend/src/components/Footer.tsx"
+      ],
       "components": [
         "blob-storage@4.0.0",
         "core-infrastructure@1.0.2",
@@ -15,64 +17,6 @@
       ],
       "testIds": [
         "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-the-upgraded-logo-image-assets-to-the-frontend-as-static-files-under-frontend-public-assets-generated-and-ensure-no-runtime-backend-dependency-is-required-to-load-them",
-      "featureTitle": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
-      "files": [
-        "frontend/src/lib/branding.ts"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-the-site-to-use-the-upgraded-logo-consistently-in-both-the-header-and-footer-replacing-the-current-header-logo-source-assets-solar-sparkle-removebg-preview-png-and-the-current-footer-logo-source-assets-generated-solar-sparkle-logo-transparent-dim-200x200-png",
-      "featureTitle": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
-      "files": [
-        "frontend/src/components/Footer.tsx",
-        "frontend/src/components/Header.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-favicon-using-the-upgraded-logo-and-wire-it-into-the-html-head-so-browser-tabs-show-the-updated-branding",
-      "featureTitle": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
-      "files": [
-        "frontend/index.html"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
       ],
       "confidence": "high"
     }

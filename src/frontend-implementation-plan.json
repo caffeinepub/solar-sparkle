@@ -1,87 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Upgrade Solar Sparkle logo assets and apply across header, footer, and favicon",
+  "title": "Remove caffeine.ai link from site footer",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Produce upgraded Solar Sparkle logo images (transparent PNG) based on the provided references, preserving the recognizable solar + panel concept with cleaner geometry and contrast.",
+      "summary": "Remove the caffeine.ai hyperlink from the footer copyright line while keeping the rest of the footer intact.",
       "acceptanceCriteria": [
-        "New logo files are produced as static images (PNG) with transparent background.",
-        "Logo appears crisp at small sizes (e.g., 32–48px height) without visible jagged edges or blurred artifacts.",
-        "Color palette is cohesive and modern (no muddy gradients or low-contrast details)."
+        "The rendered footer no longer contains any clickable link to https://caffeine.ai.",
+        "No reference to the string \"https://caffeine.ai\" remains in frontend/src/components/Footer.tsx.",
+        "The rest of the footer layout (including the copyright text, heart icon, and other links) continues to render without visual or runtime errors."
       ],
       "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
-          "operation": "create",
-          "description": "Add the upgraded emblem (solar + panel mark) as a transparent PNG with clean geometry, consistent stroke widths, and improved contrast."
-        },
-        {
-          "path": "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
-          "operation": "create",
-          "description": "Add the upgraded horizontal lockup (emblem + wordmark on one line) as a transparent PNG, optimized to remain crisp when scaled down."
-        },
-        {
-          "path": "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png",
-          "operation": "create",
-          "description": "Create the refined/modernized small transparent logo mark (v2) derived from the existing 200x200 asset, preserving the concept while improving clarity for small UI placements."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Ensure upgraded logo assets are included as static frontend files under frontend/public/assets/generated with no runtime/backend dependency.",
-      "acceptanceCriteria": [
-        "Upgraded logo assets exist in frontend/public/assets/generated.",
-        "The app loads the logo assets via /assets/generated/... paths with no network calls besides static asset fetches."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/lib/branding.ts",
-          "operation": "create",
-          "description": "Create a small branding constants module exporting static asset paths for the upgraded logos (e.g., /assets/generated/...); ensure callers use these paths directly (no backend/runtime fetch)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Replace header and footer logo sources to use the upgraded generated logo asset(s) consistently while keeping sizing balanced across breakpoints.",
-      "acceptanceCriteria": [
-        "Header (frontend/src/components/Header.tsx) uses the new generated logo asset path.",
-        "Footer (frontend/src/components/Footer.tsx) uses the new generated logo asset path.",
-        "Logo sizing remains visually balanced (no layout shift or overflow) on mobile and desktop breakpoints."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/Header.tsx",
-          "operation": "modify",
-          "description": "Replace the current header logo source (/assets/solar_sparkle-removebg-preview.png) with the upgraded generated logo path (preferably via frontend/src/lib/branding.ts), and keep existing responsive sizing behavior."
-        },
         {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Replace the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png) with the upgraded generated logo path (preferably via frontend/src/lib/branding.ts), ensuring it remains visually balanced in the footer layout."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Add a favicon derived from the upgraded emblem and wire it into the HTML head.",
-      "acceptanceCriteria": [
-        "A favicon image file exists in frontend/public (or another appropriate static location) and is referenced from frontend/index.html.",
-        "After build, the browser tab displays the new favicon."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
-          "operation": "create",
-          "description": "Add the favicon image derived from the upgraded emblem as a transparent PNG at 64x64."
-        },
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Add a favicon <link> in the document head referencing /assets/generated/favicon-solar-sparkle.dim_64x64.png so browser tabs display updated branding."
+          "description": "Remove the anchor element linking to https://caffeine.ai (including target and rel attributes) from the copyright line, and adjust surrounding text so the line still reads naturally while preserving the existing layout, Heart icon, and all other footer links. Ensure the string \"https://caffeine.ai\" no longer exists in this file."
         }
       ]
     }

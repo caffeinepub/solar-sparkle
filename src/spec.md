@@ -1,12 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Upgrade the Solar Sparkle logo (cleaner, higher-contrast, transparent) and apply it consistently across the site (header, footer, favicon).
+**Goal:** Remove the caffeine.ai hyperlink from the site footer copyright line.
 
 **Planned changes:**
-- Create upgraded logo image assets based on the provided references, preserving the solar + panel concept with cleaner geometry, consistent stroke widths, sharper edges, improved contrast, and transparent background.
-- Add the upgraded logo assets as static files under `frontend/public/assets/generated` and reference them via `/assets/generated/...` paths.
-- Update `frontend/src/components/Header.tsx` and `frontend/src/components/Footer.tsx` to use the new logo asset path(s), replacing the current header and footer logo sources.
-- Add a favicon derived from the upgraded logo and reference it from `frontend/index.html`.
+- Update `frontend/src/components/Footer.tsx` to remove the anchor element linking to `https://caffeine.ai` from the copyright line.
+- Ensure no `https://caffeine.ai` string remains in `frontend/src/components/Footer.tsx` while keeping the rest of the footer intact.
 
-**User-visible outcome:** The site displays the new, crisp Solar Sparkle branding in the header, footer, and browser tab favicon without any layout issues across mobile and desktop.
+**User-visible outcome:** The footer no longer shows any clickable link to caffeine.ai, and the remaining footer content/layout continues to display normally.
