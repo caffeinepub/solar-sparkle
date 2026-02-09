@@ -1,59 +1,105 @@
 {
   "kind": "build_request",
-  "title": "Fix scroll-to-top on navigation/refresh and update footer contact information",
+  "title": "Upgrade Solar Sparkle logo and apply across header/footer",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+      "text": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-11",
-          "msg-13"
+          "msg-4"
         ],
         "quotes": [
-          "WHEN EVER USER CLICK ON THE BUTTON IT WILL NOT START FROM THE TOP AFTER REFFERSING",
-          "yes"
+          "UPGRADE THIS LOGO AS"
         ]
       },
       "acceptanceCriteria": [
-        "From any scroll position on any page, clicking any in-app navigation button/link (e.g., Header menu items, Footer offering/solution buttons) navigates to the new route and the viewport is positioned at the top of the page.",
-        "Refreshing/reloading a page while scrolled down results in the viewport loading at the top of the page (not restoring the previous scroll position).",
-        "Behavior works on both desktop and mobile viewports across all existing routes in frontend/src/App.tsx."
+        "New logo files are produced as static images (PNG) with transparent background.",
+        "Logo appears crisp at small sizes (e.g., 32–48px height) without visible jagged edges or blurred artifacts.",
+        "Color palette is cohesive and modern (no muddy gradients or low-contrast details)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "text": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-11"
+          "msg-4"
         ],
         "quotes": [
-          "AND UPGRADE THE CONTACT INFOR.  Head Office\nKanpur, India\n+91 81124 38846\nMon - Sat, 10 AM - 6 PM\nMAIL= OFFICIAL@solarsparkle.in"
+          "UPGRADE THIS LOGO AS"
         ]
       },
       "acceptanceCriteria": [
-        "The Footer Contact section no longer shows the placeholder values (info@solarsparkle.com, +1 (555) 123-4567, etc.) and instead shows the provided Head Office location, phone number, hours, and email.",
-        "Email is displayed as \"official@solarsparkle.in\" (lowercase) and matches exactly.",
-        "Footer layout remains visually consistent with the existing design and does not overflow or break on small screens."
+        "Upgraded logo assets exist in frontend/public/assets/generated.",
+        "The app loads the logo assets via /assets/generated/... paths with no network calls besides static asset fetches."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "UPGRADE THIS LOGO AS"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header (frontend/src/components/Header.tsx) uses the new generated logo asset path.",
+        "Footer (frontend/src/components/Footer.tsx) uses the new generated logo asset path.",
+        "Logo sizing remains visually balanced (no layout shift or overflow) on mobile and desktop breakpoints."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "UPGRADE THIS LOGO AS"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A favicon image file exists in frontend/public (or another appropriate static location) and is referenced from frontend/index.html.",
+        "After build, the browser tab displays the new favicon."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui (read-only).",
-    "Do not modify the immutable authentication/actor hooks: frontend/src/hooks/useInternetIdentity.ts(x) and frontend/src/hooks/useActor.ts.",
-    "Keep all changes within the existing single React app and TanStack Router setup (no new backend services)."
+    "Do not modify any files under frontend/src/components/ui or any paths listed in frontend.immutablePaths.",
+    "Keep backend unchanged; do not add new canisters/services or external dependencies."
   ],
   "nonGoals": [
-    "No changes to backend canister logic or data models.",
-    "No new pages or routes beyond addressing scroll restoration and footer contact content.",
-    "No third-party integrations (social links can remain as-is placeholders unless explicitly requested)."
+    "Redesigning site layout, copy, navigation, or marketing sections beyond what is necessary to swap logo assets.",
+    "Implementing new authentication, CMS, or backend storage related to branding."
   ],
   "imageRequirements": {
-    "required": [],
-    "edits": []
+    "required": [
+      "Upgraded solar + panel emblem logo, transparent background (solar-sparkle-logo-mark-transparent.dim_512x512.png)",
+      "Upgraded horizontal logo lockup with emblem + wordmark on one line, transparent background (solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png)",
+      "Favicon derived from the upgraded emblem, transparent background (favicon-solar-sparkle.dim_64x64.png)"
+    ],
+    "edits": [
+      "Refine/modernize existing transparent logo mark while preserving concept (solar-sparkle-logo-transparent.dim_200x200.png > solar-sparkle-logo-transparent-v2.dim_200x200.png)"
+    ]
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

@@ -1,42 +1,87 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Global scroll-to-top on route navigation/refresh and footer contact info update",
+  "title": "Upgrade Solar Sparkle logo assets and apply across header, footer, and favicon",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Implement global scroll-to-top behavior on all in-app route navigations and on full page reloads across the TanStack Router app layout.",
+      "summary": "Produce upgraded Solar Sparkle logo images (transparent PNG) based on the provided references, preserving the recognizable solar + panel concept with cleaner geometry and contrast.",
       "acceptanceCriteria": [
-        "From any scroll position on any page, clicking any in-app navigation button/link (e.g., Header menu items, Footer offering/solution buttons) navigates to the new route and the viewport is positioned at the top of the page.",
-        "Refreshing/reloading a page while scrolled down results in the viewport loading at the top of the page (not restoring the previous scroll position).",
-        "Behavior works on both desktop and mobile viewports across all existing routes in frontend/src/App.tsx."
+        "New logo files are produced as static images (PNG) with transparent background.",
+        "Logo appears crisp at small sizes (e.g., 32–48px height) without visible jagged edges or blurred artifacts.",
+        "Color palette is cohesive and modern (no muddy gradients or low-contrast details)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/ScrollToTop.tsx",
+          "path": "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
           "operation": "create",
-          "description": "Create a small global utility component that listens to TanStack Router location changes and calls window.scrollTo(0, 0); also sets window.history.scrollRestoration = 'manual' and forces an initial scroll-to-top on mount to prevent scroll restoration on refresh/reload."
+          "description": "Add the upgraded emblem (solar + panel mark) as a transparent PNG with clean geometry, consistent stroke widths, and improved contrast."
         },
         {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wire the new ScrollToTop component into the root Layout so it runs for all existing routes (including navigations triggered from Header/Footer buttons/links) without adding new routes or touching backend/auth hooks."
+          "path": "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
+          "operation": "create",
+          "description": "Add the upgraded horizontal lockup (emblem + wordmark on one line) as a transparent PNG, optimized to remain crisp when scaled down."
+        },
+        {
+          "path": "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png",
+          "operation": "create",
+          "description": "Create the refined/modernized small transparent logo mark (v2) derived from the existing 200x200 asset, preserving the concept while improving clarity for small UI placements."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Replace the Footer Contact section placeholder values with the provided Head Office, phone, hours, and email in a clean, mobile-responsive format.",
+      "summary": "Ensure upgraded logo assets are included as static frontend files under frontend/public/assets/generated with no runtime/backend dependency.",
       "acceptanceCriteria": [
-        "The Footer Contact section no longer shows the placeholder values (info@solarsparkle.com, +1 (555) 123-4567, etc.) and instead shows the provided Head Office location, phone number, hours, and email.",
-        "Email is displayed as \"official@solarsparkle.in\" (lowercase) and matches exactly.",
-        "Footer layout remains visually consistent with the existing design and does not overflow or break on small screens."
+        "Upgraded logo assets exist in frontend/public/assets/generated.",
+        "The app loads the logo assets via /assets/generated/... paths with no network calls besides static asset fetches."
       ],
       "file_operations": [
         {
+          "path": "frontend/src/lib/branding.ts",
+          "operation": "create",
+          "description": "Create a small branding constants module exporting static asset paths for the upgraded logos (e.g., /assets/generated/...); ensure callers use these paths directly (no backend/runtime fetch)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Replace header and footer logo sources to use the upgraded generated logo asset(s) consistently while keeping sizing balanced across breakpoints.",
+      "acceptanceCriteria": [
+        "Header (frontend/src/components/Header.tsx) uses the new generated logo asset path.",
+        "Footer (frontend/src/components/Footer.tsx) uses the new generated logo asset path.",
+        "Logo sizing remains visually balanced (no layout shift or overflow) on mobile and desktop breakpoints."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Replace the current header logo source (/assets/solar_sparkle-removebg-preview.png) with the upgraded generated logo path (preferably via frontend/src/lib/branding.ts), and keep existing responsive sizing behavior."
+        },
+        {
           "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Update the Contact list content to use English labels and exactly these values: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in; keep the existing responsive layout classes and ensure no overflow on small screens."
+          "description": "Replace the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png) with the upgraded generated logo path (preferably via frontend/src/lib/branding.ts), ensuring it remains visually balanced in the footer layout."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add a favicon derived from the upgraded emblem and wire it into the HTML head.",
+      "acceptanceCriteria": [
+        "A favicon image file exists in frontend/public (or another appropriate static location) and is referenced from frontend/index.html.",
+        "After build, the browser tab displays the new favicon."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
+          "operation": "create",
+          "description": "Add the favicon image derived from the upgraded emblem as a transparent PNG at 64x64."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add a favicon <link> in the document head referencing /assets/generated/favicon-solar-sparkle.dim_64x64.png so browser tabs display updated branding."
         }
       ]
     }

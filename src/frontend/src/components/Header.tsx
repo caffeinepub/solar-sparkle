@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { LOGO_PATHS, BRAND_NAME } from '@/lib/branding';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,12 +27,12 @@ export function Header() {
           className="flex items-center gap-2 hover:opacity-80 transition-all duration-300 hover-scale"
         >
           <img 
-            src="/assets/solar_sparkle-removebg-preview.png" 
-            alt="Solar Sparkle Logo" 
+            src={LOGO_PATHS.markSmall}
+            alt={`${BRAND_NAME} Logo`}
             className="h-10 md:h-12 w-auto"
           />
           <span className="text-lg md:text-xl font-bold text-navy-primary">
-            Solar Sparkle
+            {BRAND_NAME}
           </span>
         </button>
 
@@ -212,4 +213,3 @@ export function Header() {
     </header>
   );
 }
-

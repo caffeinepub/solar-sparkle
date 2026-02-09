@@ -1,58 +1,82 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T06:12:52.961Z",
+  "generatedAt": "2026-02-09T08:18:10.478Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+        "summary": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/ScrollToTop.tsx",
-          "frontend/src/App.tsx"
+          "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
+          "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
+          "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png"
         ],
         "matchedFiles": [
-          "frontend/src/components/ScrollToTop.tsx",
-          "frontend/src/App.tsx"
+          "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
+          "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
+          "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+        "summary": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/lib/branding.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/branding.ts"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/components/Header.tsx",
           "frontend/src/components/Footer.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
+          "frontend/index.html"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
-    "build-template/Dockerfile",
-    "build-template/LICENSE",
-    "build-template/README.md",
-    "build-template/deploy.sh",
-    "build-template/icp.yaml",
-    "build-template/src/backend/canister.yaml",
-    "build-template/src/frontend/canister.yaml",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
+    "frontend/index.html",
+    "frontend/public/assets/generated/favicon-solar-sparkle.dim_64x64.png",
+    "frontend/public/assets/generated/solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png",
+    "frontend/public/assets/generated/solar-sparkle-logo-mark-transparent.dim_512x512.png",
+    "frontend/public/assets/generated/solar-sparkle-logo-transparent-v2.dim_200x200.png",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/components/ScrollToTop.tsx",
-    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/lib/branding.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

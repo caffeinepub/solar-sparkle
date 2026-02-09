@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Ensure consistent scroll-to-top behavior across all routes and update the footer Contact details.
+**Goal:** Upgrade the Solar Sparkle logo (cleaner, higher-contrast, transparent) and apply it consistently across the site (header, footer, favicon).
 
 **Planned changes:**
-- Implement global scroll-to-top on every in-app route navigation (including Header/Footer links) so new pages always start at (0,0).
-- Disable scroll position restoration on browser refresh/reload so pages load at the top even if previously scrolled.
-- Replace the Footer Contact section placeholders with the provided Head Office, phone, hours, and email (English labels; mobile-responsive formatting).
+- Create upgraded logo image assets based on the provided references, preserving the solar + panel concept with cleaner geometry, consistent stroke widths, sharper edges, improved contrast, and transparent background.
+- Add the upgraded logo assets as static files under `frontend/public/assets/generated` and reference them via `/assets/generated/...` paths.
+- Update `frontend/src/components/Header.tsx` and `frontend/src/components/Footer.tsx` to use the new logo asset path(s), replacing the current header and footer logo sources.
+- Add a favicon derived from the upgraded logo and reference it from `frontend/index.html`.
 
-**User-visible outcome:** Navigating anywhere in the site (or reloading a page) always starts at the top, and the footer shows the correct Solar Sparkle contact information.
+**User-visible outcome:** The site displays the new, crisp Solar Sparkle branding in the header, footer, and browser tab favicon without any layout issues across mobile and desktop.

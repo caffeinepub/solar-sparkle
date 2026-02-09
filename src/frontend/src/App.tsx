@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
+import { WhatsAppFab } from './components/WhatsAppFab';
 import { HomePage } from './pages/HomePage';
 import { ResidentialSolarPage } from './pages/ResidentialSolarPage';
 import { CommercialSolarPage } from './pages/CommercialSolarPage';
@@ -29,6 +30,7 @@ function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <WhatsAppFab />
       <Toaster />
     </div>
   );

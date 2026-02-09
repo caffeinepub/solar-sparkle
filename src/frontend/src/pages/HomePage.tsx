@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Sun, ClipboardCheck, Search, Wrench, Zap, Calculator, DollarSign, Leaf, TrendingUp, Heart, Shield, Award, Wind } from 'lucide-react';
+import { Sun, ClipboardCheck, Search, Wrench, Zap, Calculator, DollarSign, Leaf, TrendingUp, Heart, Shield, Award, Wind, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useNavigate } from '@tanstack/react-router';
+import { calculateSolarSystem, validateInputs, type SolarCalculatorInputs, type SolarCalculatorResult, type ValidationError } from '@/lib/solarCalculator';
+import { formatINR } from '@/lib/formatCurrency';
+import { SolarCalculatorAssumptions } from '@/components/SolarCalculatorAssumptions';
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -16,14 +20,8 @@ export function HomePage() {
     roofArea: '',
     location: '',
   });
-  const [results, setResults] = useState<{
-    systemSize: number;
-    estimatedCost: number;
-    annualSavings: number;
-    co2Reduction: number;
-    paybackPeriod: number;
-  } | null>(null);
-
+  const [results, setResults] = useState<SolarCalculatorResult | null>(null);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -35,24 +33,33 @@ export function HomePage() {
   }, []);
 
   const calculateSolar = () => {
-    const bill = parseFloat(formData.monthlyBill);
-    if (!bill || !formData.propertyType) return;
-
-    // Calculation logic for INR
-    const avgCostPerWatt = 50; // INR per watt
-    const systemSize = (bill * 12) / 15000; // kW (adjusted for INR)
-    const estimatedCost = systemSize * 1000 * avgCostPerWatt;
-    const annualSavings = bill * 12 * 0.7;
-    const co2Reduction = systemSize * 1.5; // tons per year
-    const paybackPeriod = estimatedCost / annualSavings;
-
-    setResults({
-      systemSize: Math.round(systemSize * 10) / 10,
-      estimatedCost: Math.round(estimatedCost),
-      annualSavings: Math.round(annualSavings),
-      co2Reduction: Math.round(co2Reduction * 10) / 10,
-      paybackPeriod: Math.round(paybackPeriod * 10) / 10,
-    });
+    // Clear previous errors
+    setValidationErrors([]);
+    
+    // Prepare inputs
+    const inputs: Partial<SolarCalculatorInputs> = {
+      monthlyBill: formData.monthlyBill ? parseFloat(formData.monthlyBill) : undefined,
+      propertyType: formData.propertyType as 'residential' | 'commercial' | 'industrial',
+      roofArea: formData.roofArea ? parseFloat(formData.roofArea) : undefined,
+    };
+    
+    // Validate inputs
+    const errors = validateInputs(inputs);
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      setResults(null);
+      return;
+    }
+    
+    // Calculate solar system
+    const calculatorInputs: SolarCalculatorInputs = {
+      monthlyBill: inputs.monthlyBill!,
+      propertyType: inputs.propertyType!,
+      roofArea: inputs.roofArea,
+    };
+    
+    const calculationResults = calculateSolarSystem(calculatorInputs);
+    setResults(calculationResults);
   };
 
   return (
@@ -282,8 +289,23 @@ export function HomePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4 md:space-y-6">
+                  {validationErrors.length > 0 && (
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        <ul className="list-disc list-inside space-y-1">
+                          {validationErrors.map((error, index) => (
+                            <li key={index}>{error.message}</li>
+                          ))}
+                        </ul>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
                   <div className="space-y-2">
-                    <Label htmlFor="monthlyBill" className="text-sm md:text-base">Average Monthly Electricity Bill (₹)</Label>
+                    <Label htmlFor="monthlyBill" className="text-sm md:text-base">
+                      Average Monthly Electricity Bill (₹) <span className="text-destructive">*</span>
+                    </Label>
                     <Input
                       id="monthlyBill"
                       type="number"
@@ -295,7 +317,9 @@ export function HomePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="propertyType" className="text-sm md:text-base">Property Type</Label>
+                    <Label htmlFor="propertyType" className="text-sm md:text-base">
+                      Property Type <span className="text-destructive">*</span>
+                    </Label>
                     <Select
                       value={formData.propertyType}
                       onValueChange={(value) => setFormData({ ...formData, propertyType: value })}
@@ -321,6 +345,9 @@ export function HomePage() {
                       placeholder="e.g., 500"
                       className="h-10 md:h-11 text-base transition-all duration-300 focus:ring-2 focus:ring-sky-primary"
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Optional: Helps us check if your roof can accommodate the ideal system size
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -345,102 +372,136 @@ export function HomePage() {
             </div>
 
             <div className="animate-fade-in-up">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Your Solar Estimate</h3>
               {results ? (
-                <div className="space-y-3 md:space-y-4">
-                  <Card className="hover-lift transition-all duration-300 animate-scale-in">
-                    <CardHeader className="pb-3 md:pb-6">
-                      <div className="flex items-center gap-3">
-                        <Zap className="h-6 w-6 md:h-8 md:w-8 text-navy-primary icon-bounce" />
-                        <div>
-                          <CardTitle className="text-base md:text-lg">Recommended System Size</CardTitle>
-                          <CardDescription className="text-xl md:text-2xl font-bold text-navy-primary mt-1">
-                            {results.systemSize} kW
-                          </CardDescription>
-                        </div>
+                <div className="space-y-4 md:space-y-6">
+                  {results.isRoofLimited && results.roofLimitMessage && (
+                    <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+                      <AlertCircle className="h-4 w-4 text-amber-600" />
+                      <AlertDescription className="text-sm text-amber-800 dark:text-amber-200">
+                        {results.roofLimitMessage}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <Card className="border-sky-primary/30 hover-lift transition-all duration-300">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2">
+                        <Sun className="h-5 w-5 text-sky-primary" />
+                        <CardTitle className="text-lg">Recommended System Size</CardTitle>
                       </div>
                     </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl md:text-4xl font-bold text-navy-primary mb-2">
+                        {results.feasibleSystemSize} kW
+                      </div>
+                      {results.isRoofLimited && (
+                        <p className="text-sm text-muted-foreground">
+                          Ideal size: {results.idealSystemSize} kW (roof-limited to {results.feasibleSystemSize} kW)
+                        </p>
+                      )}
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Perfect for your energy needs
+                      </p>
+                    </CardContent>
                   </Card>
 
-                  <Card className="hover-lift transition-all duration-300 animate-scale-in">
-                    <CardHeader className="pb-3 md:pb-6">
-                      <div className="flex items-center gap-3">
-                        <DollarSign className="h-6 w-6 md:h-8 md:w-8 text-sky-primary icon-bounce" />
-                        <div>
-                          <CardTitle className="text-base md:text-lg">Estimated System Cost</CardTitle>
-                          <CardDescription className="text-xl md:text-2xl font-bold text-sky-primary mt-1">
-                            ₹{results.estimatedCost.toLocaleString('en-IN')}
-                          </CardDescription>
-                        </div>
+                  <Card className="border-sky-primary/30 hover-lift transition-all duration-300">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="h-5 w-5 text-sky-primary" />
+                        <CardTitle className="text-lg">Estimated System Cost</CardTitle>
                       </div>
                     </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl md:text-4xl font-bold text-navy-primary mb-2">
+                        {formatINR(results.estimatedCost)}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {results.isRoofLimited 
+                          ? `Based on ${results.feasibleSystemSize} kW feasible system`
+                          : 'Including installation and components'
+                        }
+                      </p>
+                    </CardContent>
                   </Card>
 
-                  <Card className="hover-lift transition-all duration-300 animate-scale-in">
-                    <CardHeader className="pb-3 md:pb-6">
-                      <div className="flex items-center gap-3">
-                        <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-navy-primary icon-bounce" />
-                        <div>
-                          <CardTitle className="text-base md:text-lg">Annual Savings</CardTitle>
-                          <CardDescription className="text-xl md:text-2xl font-bold text-navy-primary mt-1">
-                            ₹{results.annualSavings.toLocaleString('en-IN')}/year
-                          </CardDescription>
-                        </div>
+                  <Card className="border-sky-primary/30 hover-lift transition-all duration-300">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-sky-primary" />
+                        <CardTitle className="text-lg">Annual Savings</CardTitle>
                       </div>
                     </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl md:text-4xl font-bold text-green-600 mb-2">
+                        {formatINR(results.annualSavings)}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Estimated yearly electricity bill reduction
+                      </p>
+                    </CardContent>
                   </Card>
 
-                  <Card className="hover-lift transition-all duration-300 animate-scale-in">
-                    <CardHeader className="pb-3 md:pb-6">
-                      <div className="flex items-center gap-3">
-                        <Leaf className="h-6 w-6 md:h-8 md:w-8 text-sky-primary icon-bounce" />
-                        <div>
-                          <CardTitle className="text-base md:text-lg">CO₂ Reduction</CardTitle>
-                          <CardDescription className="text-xl md:text-2xl font-bold text-sky-primary mt-1">
-                            {results.co2Reduction} tons/year
-                          </CardDescription>
-                        </div>
+                  <Card className="border-sky-primary/30 hover-lift transition-all duration-300">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2">
+                        <Leaf className="h-5 w-5 text-sky-primary" />
+                        <CardTitle className="text-lg">Environmental Impact</CardTitle>
                       </div>
                     </CardHeader>
-                  </Card>
-
-                  <Card className="hover-lift transition-all duration-300 animate-scale-in">
-                    <CardHeader className="pb-3 md:pb-6">
-                      <div className="flex items-center gap-3">
-                        <Calculator className="h-6 w-6 md:h-8 md:w-8 text-navy-primary icon-bounce" />
+                    <CardContent>
+                      <div className="space-y-3">
                         <div>
-                          <CardTitle className="text-base md:text-lg">Payback Period</CardTitle>
-                          <CardDescription className="text-xl md:text-2xl font-bold text-navy-primary mt-1">
-                            {results.paybackPeriod} years
-                          </CardDescription>
+                          <div className="text-2xl md:text-3xl font-bold text-green-600 mb-1">
+                            {results.co2Reduction} tons
+                          </div>
+                          <p className="text-sm text-muted-foreground">CO₂ reduction per year</p>
+                        </div>
+                        <div className="pt-2 border-t">
+                          <div className="text-xl md:text-2xl font-bold text-navy-primary mb-1">
+                            {isFinite(results.paybackPeriod) 
+                              ? `${results.paybackPeriod} years`
+                              : 'N/A'
+                            }
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {isFinite(results.paybackPeriod)
+                              ? 'Estimated payback period'
+                              : 'Payback period cannot be calculated'
+                            }
+                          </p>
                         </div>
                       </div>
-                    </CardHeader>
+                    </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-br from-navy-primary/5 to-sky-light border-navy-primary/20 hover-glow transition-all duration-300">
-                    <CardContent className="pt-4 md:pt-6 px-4 md:px-6">
-                      <p className="text-xs md:text-sm text-muted-foreground mb-4">
-                        These are estimated values based on average conditions. For a detailed, personalized assessment, 
-                        book a free consultation with our experts.
+                  <SolarCalculatorAssumptions assumptions={results.assumptions} />
+
+                  <Card className="bg-gradient-to-br from-sky-primary to-navy-primary text-white border-0">
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg md:text-xl font-bold mb-3">Ready to Go Solar?</h3>
+                      <p className="text-sm md:text-base text-sky-light mb-4">
+                        Get a detailed proposal with accurate site measurements and customized financing options.
                       </p>
                       <Button 
                         onClick={() => navigate({ to: '/expert-consultancy' })}
-                        className="w-full bg-navy-primary hover:bg-navy-primary/90 text-white h-10 md:h-11 hover-scale transition-all duration-300"
+                        className="w-full bg-white text-navy-primary hover:bg-sky-light transition-all duration-300"
                       >
-                        Book Free Consultation
+                        Get Free Expert Consultation
                       </Button>
                     </CardContent>
                   </Card>
                 </div>
               ) : (
-                <Card className="h-full flex items-center justify-center hover-glow transition-all duration-300">
-                  <CardContent className="text-center py-12 md:py-16 px-4">
-                    <Calculator className="h-12 w-12 md:h-16 md:w-16 text-muted-foreground mx-auto mb-4 animate-pulse-slow" />
-                    <CardTitle className="mb-2 text-lg md:text-xl">Ready to Calculate</CardTitle>
-                    <CardDescription className="text-sm md:text-base">
-                      Fill in the form on the left to see your personalized solar estimate
-                    </CardDescription>
+                <Card className="border-dashed border-2 border-muted-foreground/20">
+                  <CardContent className="pt-12 pb-12 text-center">
+                    <Calculator className="h-16 w-16 mx-auto mb-4 text-muted-foreground/40" />
+                    <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
+                      Your Results Will Appear Here
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Fill in your details and click "Calculate Solar Potential" to see your personalized solar estimate
+                    </p>
                   </CardContent>
                 </Card>
               )}
@@ -451,4 +512,3 @@ export function HomePage() {
     </div>
   );
 }
-

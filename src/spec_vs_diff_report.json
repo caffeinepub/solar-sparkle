@@ -1,32 +1,68 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T06:12:52.959Z",
-  "summary": "REQ-1 appears implemented via a new global ScrollToTop component wired into the App layout. REQ-2 likely implemented in Footer, but the diff for the Contact section is truncated so exact-string compliance cannot be fully verified from provided excerpts. Additionally, an immutable auth hook file was modified (disallowed by constraints), and a project_state.json metadata file was added though not requested.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-09T08:18:10.475Z",
+  "summary": "Header/Footer were updated to reference new logo paths via a new branding constants module, and index.html now points to a generated favicon path. However, the diff does not show the required PNG assets being added under frontend/public/assets/generated, and several unrelated UI/content/style enhancements appear to have been introduced beyond swapping logo assets.",
+  "missing_requirements": [
     {
-      "description": "Modified an immutable authentication/actor hook file (useInternetIdentity), which is explicitly forbidden by constraints.",
-      "reason": "BuildRequest constraints state not to modify frontend/src/hooks/useInternetIdentity.ts(x), but the diff shows it was modified.",
+      "id": "REQ-1",
+      "requirement": "Create upgraded Solar Sparkle logo PNG assets (mark, horizontal lockup, refined small mark v2) with transparent backgrounds and appropriate visual quality.",
+      "reason": "The diff only adds TypeScript constants that reference the new image filenames, but does not show any actual PNG image files being created/added (and the diff summary is LLM-readable files only). There is no evidence that the upgraded logo images themselves exist or were generated.",
       "evidence": [
-        "frontend/src/hooks/useInternetIdentity.ts"
+        "frontend/src/lib/branding.ts"
       ]
     },
     {
-      "description": "Added project_state.json tracking feature requests/status, which was not requested as part of implementing scroll restoration or footer contact updates.",
-      "reason": "BuildRequest does not request adding project metadata/state files; only scroll-to-top behavior and footer contact content changes were requested.",
+      "id": "REQ-2",
+      "requirement": "Add the upgraded logo image assets as static files under frontend/public/assets/generated and load them via /assets/generated/... paths without runtime/backend dependencies.",
+      "reason": "Although code references /assets/generated/... paths, the diff does not show any files added under frontend/public/assets/generated, so there is no evidence the static assets were actually added to the repo at the required location.",
       "evidence": [
-        "project_state.json"
+        "frontend/src/lib/branding.ts",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/Footer.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Add a favicon image file and reference it from frontend/index.html.",
+      "reason": "frontend/index.html references /assets/generated/favicon-solar-sparkle.dim_64x64.png, but the diff does not show the favicon image file being added anywhere (e.g., frontend/public/assets/generated or frontend/public).",
+      "evidence": [
+        "frontend/index.html",
+        "frontend/src/lib/branding.ts"
       ]
     }
   ],
-  "confidence": 0.62,
+  "hallucinated_features": [
+    {
+      "description": "Introduced/changed branding copy via BRAND_TAGLINE and rendering it in the footer.",
+      "reason": "The BuildRequest is limited to swapping logo assets and adding a favicon; it explicitly lists non-goals around copy/marketing changes beyond what is necessary for the logo swap. Adding a tagline constant and displaying it is not requested.",
+      "evidence": [
+        "frontend/src/lib/branding.ts",
+        "frontend/src/components/Footer.tsx"
+      ]
+    },
+    {
+      "description": "Updated footer social media links to specific external URLs opening in new tabs.",
+      "reason": "Not requested by any REQ; this is a navigation/content change beyond the logo swap.",
+      "evidence": [
+        "frontend/src/components/Footer.tsx"
+      ]
+    },
+    {
+      "description": "Broad UI/animation/style enhancements across the frontend (e.g., global CSS animation utilities, Tailwind config extensions, header hover/scale effects, multiple page enhancements like calculator improvements).",
+      "reason": "Non-goals explicitly avoid redesigning site layout/marketing sections beyond what is necessary to swap logo assets; these enhancements go beyond the requested logo/favicon update.",
+      "evidence": [
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "confidence": 0.78,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
+    "frontend/index.html",
     "frontend/src/components/Footer.tsx",
-    "frontend/src/components/ScrollToTop.tsx",
-    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/lib/branding.ts",
     "project_state.json"
   ]
 }

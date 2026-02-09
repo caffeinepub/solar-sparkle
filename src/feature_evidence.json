@@ -2,12 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-ensure-the-page-always-scrolls-to-the-top-0-0-when-the-user-navigates-between-routes-via-button-link-clicks-including-navigation-triggered-by-header-and-footer-buttons-and-when-the-page-is-refreshed-reloaded-implement-this-globally-in-the-app-layout-router-layer-so-it-applies-to-all-pages",
-      "featureTitle": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/ScrollToTop.tsx"
-      ],
+      "featureId": "feature-create-an-upgraded-solar-sparkle-logo-based-on-the-two-user-uploaded-references-image-12-png-only-logo-jpeg-keeping-the-same-recognizable-solar-panel-concept-but-with-cleaner-geometry-sharper-edges-consistent-stroke-widths-improved-contrast-and-transparent-background",
+      "featureTitle": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
+      "files": [],
       "components": [
         "blob-storage@4.0.0",
         "core-infrastructure@1.0.2",
@@ -22,10 +19,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-website-contact-information-displayed-in-the-footer-contact-section-to-exactly-head-office-kanpur-india-phone-91-81124-38846-hours-mon-sat-10-am-6-pm-email-official-solarsparkle-in-use-english-labels-and-ensure-formatting-remains-clean-and-responsive-on-mobile",
-      "featureTitle": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "featureId": "feature-add-the-upgraded-logo-image-assets-to-the-frontend-as-static-files-under-frontend-public-assets-generated-and-ensure-no-runtime-backend-dependency-is-required-to-load-them",
+      "featureTitle": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
       "files": [
-        "frontend/src/components/Footer.tsx"
+        "frontend/src/lib/branding.ts"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -37,6 +34,45 @@
       ],
       "testIds": [
         "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-site-to-use-the-upgraded-logo-consistently-in-both-the-header-and-footer-replacing-the-current-header-logo-source-assets-solar-sparkle-removebg-preview-png-and-the-current-footer-logo-source-assets-generated-solar-sparkle-logo-transparent-dim-200x200-png",
+      "featureTitle": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
+      "files": [
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Header.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-favicon-using-the-upgraded-logo-and-wire-it-into-the-html-head-so-browser-tabs-show-the-updated-branding",
+      "featureTitle": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
+      "files": [
+        "frontend/index.html"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
       ],
       "confidence": "high"
     }

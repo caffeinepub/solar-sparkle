@@ -1,26 +1,41 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Solar Sparkle app/website with homepage layout and mobile-related improvements.",
+  "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [
-    "Page does not scroll to top after refresh or button click/navigation."
-  ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Upgraded solar + panel emblem logo, transparent background (solar-sparkle-logo-mark-transparent.dim_512x512.png)\n- Upgraded horizontal logo lockup with emblem + wordmark on one line, transparent background (solar-sparkle-logo-lockup-horizontal-transparent.dim_1200x300.png)\n- Favicon derived from the upgraded emblem, transparent background (favicon-solar-sparkle.dim_64x64.png)\n\n## Edit Images\n- Refine/modernize existing transparent logo mark while preserving concept (solar-sparkle-logo-transparent.dim_200x200.png > solar-sparkle-logo-transparent-v2.dim_200x200.png)",
   "existing_features": [
     {
-      "id": "feature-ensure-the-page-always-scrolls-to-the-top-0-0-when-the-user-navigates-between-routes-via-button-link-clicks-including-navigation-triggered-by-header-and-footer-buttons-and-when-the-page-is-refreshed-reloaded-implement-this-globally-in-the-app-layout-router-layer-so-it-applies-to-all-pages",
-      "title": "Ensure the page always scrolls to the top (0,0) when the user navigates between routes via button/link clicks (including navigation triggered by Header and Footer buttons) and when the page is refreshed/reloaded. Implement this globally in the app layout/router layer so it applies to all pages.",
+      "id": "feature-create-an-upgraded-solar-sparkle-logo-based-on-the-two-user-uploaded-references-image-12-png-only-logo-jpeg-keeping-the-same-recognizable-solar-panel-concept-but-with-cleaner-geometry-sharper-edges-consistent-stroke-widths-improved-contrast-and-transparent-background",
+      "title": "Create an upgraded Solar Sparkle logo based on the two user-uploaded references (image-12.png, ONLY LOGO.jpeg), keeping the same recognizable solar + panel concept but with cleaner geometry, sharper edges, consistent stroke widths, improved contrast, and transparent background.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-the-website-contact-information-displayed-in-the-footer-contact-section-to-exactly-head-office-kanpur-india-phone-91-81124-38846-hours-mon-sat-10-am-6-pm-email-official-solarsparkle-in-use-english-labels-and-ensure-formatting-remains-clean-and-responsive-on-mobile",
-      "title": "Update the website contact information displayed in the footer Contact section to exactly: Head Office: Kanpur, India; Phone: +91 81124 38846; Hours: Mon - Sat, 10 AM - 6 PM; Email: official@solarsparkle.in. Use English labels and ensure formatting remains clean and responsive on mobile.",
+      "id": "feature-add-the-upgraded-logo-image-assets-to-the-frontend-as-static-files-under-frontend-public-assets-generated-and-ensure-no-runtime-backend-dependency-is-required-to-load-them",
+      "title": "Add the upgraded logo image assets to the frontend as static files under frontend/public/assets/generated and ensure no runtime/backend dependency is required to load them.",
       "reqIds": [
         "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-site-to-use-the-upgraded-logo-consistently-in-both-the-header-and-footer-replacing-the-current-header-logo-source-assets-solar-sparkle-removebg-preview-png-and-the-current-footer-logo-source-assets-generated-solar-sparkle-logo-transparent-dim-200x200-png",
+      "title": "Update the site to use the upgraded logo consistently in both the header and footer, replacing the current header logo source (/assets/solar_sparkle-removebg-preview.png) and the current footer logo source (/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-favicon-using-the-upgraded-logo-and-wire-it-into-the-html-head-so-browser-tabs-show-the-updated-branding",
+      "title": "Add a favicon using the upgraded logo and wire it into the HTML head so browser tabs show the updated branding.",
+      "reqIds": [
+        "REQ-4"
       ],
       "version": 1
     }
@@ -28,18 +43,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Force page to start at top on refresh and when navigating via button clicks (scroll restoration / scrollTo(0,0)).",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Update Contact Information section to: Head Office Kanpur, India; +91 81124 38846; Mon-Sat 10 AM-6 PM; Email official@solarsparkle.in.",
+      "summary": "Upgrade the project logo (user requested logo upgrade; details TBD)",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Solar Sparkle",
+  "projectName": "Upgrade Solar Sparkle logo and apply across header/footer",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
