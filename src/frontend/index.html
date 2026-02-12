@@ -1,11 +1,37 @@
-<html lang='en'>
-    <head>
-        <meta charset='UTF-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-        <title>Solar Sparkle   Solar Energy Systems Website</title>
-    </head>
-    <body>
-        <div id='root'></div>
-        <script type='module' src='/src/main.tsx'></script>
-    </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/assets/generated/favicon-solar-sparkle.dim_64x64.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solar Sparkle - Premium Solar Solutions</title>
+    <meta name="description" content="Solar Sparkle provides premium solar energy solutions for residential, commercial, and industrial needs. Get expert consultancy and reliable solar installations." />
+    
+    <!-- Runtime Configuration -->
+    <!-- 
+      Google Sheets Export Configuration:
+      Configure these values at deployment time to enable automatic export of form submissions to Google Sheets.
+      See frontend/GOOGLE_SHEETS_EXPORT.md for detailed setup instructions.
+      
+      Deployment Guide:
+      For production deployment to Internet Computer, see frontend/DEPLOYMENT.md for step-by-step instructions
+      including routing configuration, admin access setup, and verification checklist.
+    -->
+    <script>
+      window.GOOGLE_SHEETS_CONFIG = {
+        // Expert Consultancy form endpoint
+        consultancyEndpoint: '',
+        // Trusted Partner registration endpoint  
+        partnerEndpoint: '',
+        // AMC Enquiry form endpoint
+        amcEndpoint: '',
+        // Optional: Shared secret for authentication
+        sharedSecret: ''
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

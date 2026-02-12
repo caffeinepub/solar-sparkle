@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MessageSquare, Phone, Mail, MapPin, Loader2 } from 'lucide-react';
+import { MessageSquare, Phone, Mail, MapPin, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,17 +7,41 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubmitConsultancyForm } from '@/hooks/useQueries';
 import { toast } from 'sonner';
+import { exportConsultancyToSheets, type ConsultancyFormData } from '@/lib/googleSheetsExport';
+import { isConsultancyExportConfigured } from '@/config/googleSheetsConfig';
 
 export function ExpertConsultancyPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ConsultancyFormData>({
     name: '',
     phoneNumber: '',
     email: '',
     location: '',
     requirementMessage: '',
   });
+  const [isExportingToSheets, setIsExportingToSheets] = useState(false);
+  const [lastSubmittedData, setLastSubmittedData] = useState<ConsultancyFormData | null>(null);
 
   const submitMutation = useSubmitConsultancyForm();
+
+  const handleSheetsExport = async (data: ConsultancyFormData) => {
+    setIsExportingToSheets(true);
+    const result = await exportConsultancyToSheets(data);
+    setIsExportingToSheets(false);
+
+    if (!result.success) {
+      if (result.configMissing) {
+        console.warn('Google Sheets export not configured');
+      } else {
+        toast.error('Failed to export to Google Sheets', {
+          description: result.error || 'Please try again or contact support.',
+          action: {
+            label: 'Retry',
+            onClick: () => handleSheetsExport(data),
+          },
+        });
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +52,16 @@ export function ExpertConsultancyPage() {
     }
 
     try {
+      // Submit to backend first
       await submitMutation.mutateAsync(formData);
+      
+      // Store the submitted data for potential retry
+      setLastSubmittedData({ ...formData });
+      
+      // Show success message
       toast.success('Consultation request submitted successfully! Our team will contact you soon.');
+      
+      // Clear form
       setFormData({
         name: '',
         phoneNumber: '',
@@ -37,8 +69,19 @@ export function ExpertConsultancyPage() {
         location: '',
         requirementMessage: '',
       });
+
+      // Export to Google Sheets after successful backend submission
+      if (isConsultancyExportConfigured()) {
+        await handleSheetsExport(lastSubmittedData || formData);
+      }
     } catch (error) {
       toast.error('Failed to submit form. Please try again.');
+    }
+  };
+
+  const handleRetryExport = () => {
+    if (lastSubmittedData) {
+      handleSheetsExport(lastSubmittedData);
     }
   };
 
@@ -142,17 +185,39 @@ export function ExpertConsultancyPage() {
                 <Button 
                   type="submit" 
                   className="w-full bg-navy-primary hover:bg-navy-primary/90 text-white h-11 md:h-12 text-base hover-scale transition-all duration-300 shadow-md hover:shadow-glow-md"
-                  disabled={submitMutation.isPending}
+                  disabled={submitMutation.isPending || isExportingToSheets}
                 >
-                  {submitMutation.isPending ? (
+                  {submitMutation.isPending || isExportingToSheets ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
+                      {submitMutation.isPending ? 'Submitting...' : 'Exporting...'}
                     </>
                   ) : (
                     'Submit Consultation Request'
                   )}
                 </Button>
+
+                {lastSubmittedData && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={handleRetryExport}
+                    disabled={isExportingToSheets}
+                  >
+                    {isExportingToSheets ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Retrying Export...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Retry Google Sheets Export
+                      </>
+                    )}
+                  </Button>
+                )}
               </form>
             </div>
 
@@ -200,15 +265,15 @@ export function ExpertConsultancyPage() {
                 <div className="space-y-3 text-xs md:text-sm">
                   <div className="flex items-center gap-3">
                     <Phone className="h-4 w-4 md:h-5 md:w-5 text-navy-primary icon-bounce" />
-                    <span>+1 (555) 123-4567</span>
+                    <span>+91 81124 38846</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="h-4 w-4 md:h-5 md:w-5 text-navy-primary icon-bounce" />
-                    <span>info@solarsparkle.com</span>
+                    <span>official@solarsparkle.in</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="h-4 w-4 md:h-5 md:w-5 text-navy-primary icon-bounce" />
-                    <span>123 Solar Street, Green City, EC 12345</span>
+                    <span>Kanpur, India</span>
                   </div>
                 </div>
               </div>
@@ -219,4 +284,3 @@ export function ExpertConsultancyPage() {
     </div>
   );
 }
-

@@ -10,6 +10,16 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface AmcEnquiry {
+  'id' : bigint,
+  'status' : string,
+  'clientName' : string,
+  'email' : string,
+  'systemDetails' : string,
+  'timestamp' : Time,
+  'phoneNumber' : string,
+  'location' : string,
+}
 export interface ConsultancyForm {
   'id' : bigint,
   'status' : string,
@@ -32,6 +42,10 @@ export interface PartnerRegistration {
   'location' : string,
 }
 export type Time = bigint;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _CaffeineStorageCreateCertificateResult {
   'method' : string,
   'blob_hash' : string,
@@ -59,12 +73,28 @@ export interface _SERVICE {
     _CaffeineStorageRefillResult
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
-  'getAllConsultancyForms' : ActorMethod<[], Array<ConsultancyForm>>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'adminGetAllAmcEnquiries' : ActorMethod<[], Array<AmcEnquiry>>,
+  'adminGetAllConsultancyForms' : ActorMethod<[], Array<ConsultancyForm>>,
+  'adminGetAllPartnerRegistrations' : ActorMethod<
+    [],
+    Array<PartnerRegistration>
+  >,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'getAllOfferings' : ActorMethod<[], Array<string>>,
-  'getAllPartnerRegistrations' : ActorMethod<[], Array<PartnerRegistration>>,
   'getAllSolutions' : ActorMethod<[], Array<string>>,
+  'getAmcEnquiryById' : ActorMethod<[bigint], AmcEnquiry>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getConsultancyFormById' : ActorMethod<[bigint], ConsultancyForm>,
   'getPartnerRegistrationById' : ActorMethod<[bigint], PartnerRegistration>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'submitAmcEnquiry' : ActorMethod<
+    [string, string, string, string, string],
+    bigint
+  >,
   'submitConsultancyForm' : ActorMethod<
     [string, string, string, string, string],
     bigint
@@ -73,6 +103,7 @@ export interface _SERVICE {
     [string, string, string, string, string, string],
     bigint
   >,
+  'updateAmcEnquiryStatus' : ActorMethod<[bigint, string], undefined>,
   'updateConsultancyStatus' : ActorMethod<[bigint, string], undefined>,
   'updatePartnerStatus' : ActorMethod<[bigint, string], undefined>,
 }

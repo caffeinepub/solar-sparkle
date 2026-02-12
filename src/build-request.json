@@ -1,47 +1,55 @@
 {
   "kind": "build_request",
-  "title": "Remove caffeine.ai link from site footer",
-  "priority": "normal",
+  "title": "Fix build-breaking errors causing internal build failure",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "In frontend/src/components/Footer.tsx, remove the footer hyperlink that points to https://caffeine.ai (the \"caffeine.ai\" anchor element with target=\"_blank\" and rel=\"noopener noreferrer\") from the copyright line.",
+      "text": "Resolve the build failure by ensuring all imported React/TypeScript modules compile successfully, with primary focus on empty placeholder component files that currently contain no code.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-9"
         ],
         "quotes": [
-          "href=\"https://caffeine.ai\" \n              target=\"_blank\" \n              rel=\"noopener noreferrer\"\n              className=\"text-navy-primary hover:underline\"\n            > REMOVE THIS FROM THE FOOTER.TSX"
+          "fix the internal error first"
         ]
       },
       "acceptanceCriteria": [
-        "The rendered footer no longer contains any clickable link to https://caffeine.ai.",
-        "No reference to the string \"https://caffeine.ai\" remains in frontend/src/components/Footer.tsx.",
-        "The rest of the footer layout (including the copyright text, heart icon, and other links) continues to render without visual or runtime errors."
+        "`npm run build` (or the project’s standard frontend build command) completes without TypeScript or bundler errors.",
+        "The following placeholder files are no longer empty and each exports a valid React component (or they are removed from all imports/routes if intentionally unused): `frontend/src/components/Hero.tsx`, `frontend/src/components/Products.tsx`, `frontend/src/components/ContactSection.tsx`, `frontend/src/components/CareerSection.tsx`.",
+        "The app loads in the browser without a blank screen or runtime import errors."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a minimal developer-facing troubleshooting note to help identify similar future build errors (e.g., empty TSX modules, missing exports), and specify the exact command(s) to run to reproduce the error locally.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "fix the internal error first"
+        ]
+      },
+      "acceptanceCriteria": [
+        "`frontend/DEPLOYMENT.md` (or an appropriate existing dev/deploy doc in the frontend folder) includes a short section explaining how to run the local build and what to check when the build fails due to TypeScript/module errors.",
+        "All added documentation text is in English."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any files under frontend/src/components/ui or any paths listed as immutable in SYSTEM_CONTEXT."
+    "Do not edit any files under `frontend/src/components/ui` (read-only UI component sources must be composed, not edited).",
+    "Do not modify files in `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, or `frontend/src/main.tsx` (immutable paths).",
+    "Keep backend as a single Motoko actor in `backend/main.mo`; add `backend/migration.mo` only if a state upgrade is required."
   ],
   "nonGoals": [
-    "Do not change any other social links (Facebook, X, LinkedIn, Instagram).",
-    "Do not change footer styling beyond what is required to remove the caffeine.ai link.",
-    "Do not implement Privacy Policy/Terms pages (these can remain as placeholder href=\"#\")."
+    "Do not implement OTP-by-email admin access (email sending is not available).",
+    "Do not implement the password-protected admin panel in this change; focus only on fixing the internal/build error first."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

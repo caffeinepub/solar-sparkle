@@ -1,21 +1,51 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remove caffeine.ai link from site footer",
+  "title": "Fix frontend build-breaking placeholder modules and add build troubleshooting notes",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Remove the caffeine.ai hyperlink from the footer copyright line while keeping the rest of the footer intact.",
+      "summary": "Ensure all placeholder TSX modules compile by exporting valid React components (or ensuring they are safe to import).",
       "acceptanceCriteria": [
-        "The rendered footer no longer contains any clickable link to https://caffeine.ai.",
-        "No reference to the string \"https://caffeine.ai\" remains in frontend/src/components/Footer.tsx.",
-        "The rest of the footer layout (including the copyright text, heart icon, and other links) continues to render without visual or runtime errors."
+        "`npm run build` (or the project’s standard frontend build command) completes without TypeScript or bundler errors.",
+        "The following placeholder files are no longer empty and each exports a valid React component (or they are removed from all imports/routes if intentionally unused): `frontend/src/components/Hero.tsx`, `frontend/src/components/Products.tsx`, `frontend/src/components/ContactSection.tsx`, `frontend/src/components/CareerSection.tsx`.",
+        "The app loads in the browser without a blank screen or runtime import errors."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Footer.tsx",
+          "path": "frontend/src/components/Hero.tsx",
           "operation": "modify",
-          "description": "Remove the anchor element linking to https://caffeine.ai (including target and rel attributes) from the copyright line, and adjust surrounding text so the line still reads naturally while preserving the existing layout, Heart icon, and all other footer links. Ensure the string \"https://caffeine.ai\" no longer exists in this file."
+          "description": "Implement a minimal, type-safe `Hero` React component export (and optional default export) so any existing imports compile successfully."
+        },
+        {
+          "path": "frontend/src/components/Products.tsx",
+          "operation": "modify",
+          "description": "Implement a minimal, type-safe `Products` React component export (and optional default export) so any existing imports compile successfully."
+        },
+        {
+          "path": "frontend/src/components/ContactSection.tsx",
+          "operation": "modify",
+          "description": "Implement a minimal, type-safe `ContactSection` React component export (and optional default export) so any existing imports compile successfully."
+        },
+        {
+          "path": "frontend/src/components/CareerSection.tsx",
+          "operation": "modify",
+          "description": "Implement a minimal, type-safe `CareerSection` React component export (and optional default export) so any existing imports compile successfully."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Document how to reproduce frontend build failures locally and what to check for common TS/module issues.",
+      "acceptanceCriteria": [
+        "`frontend/DEPLOYMENT.md` (or an appropriate existing dev/deploy doc in the frontend folder) includes a short section explaining how to run the local build and what to check when the build fails due to TypeScript/module errors.",
+        "All added documentation text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/DEPLOYMENT.md",
+          "operation": "modify",
+          "description": "Add a concise developer-facing troubleshooting subsection listing the exact local commands to reproduce the build (e.g., install + build) and a checklist focused on empty TS/TSX modules, missing exports, wrong import paths/casing, and other common TypeScript/module-resolution causes of build failures."
         }
       ]
     }

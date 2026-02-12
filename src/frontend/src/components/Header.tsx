@@ -26,7 +26,7 @@ export function Header() {
           className="flex items-center gap-2 hover:opacity-80 transition-all duration-300 hover-scale"
         >
           <img 
-            src="/assets/solar_sparkle-removebg-preview.png" 
+            src="/assets/generated/amc-logo-transparent.dim_512x512.png" 
             alt="Solar Sparkle Logo" 
             className="h-10 md:h-12 w-auto"
           />
@@ -82,6 +82,13 @@ export function Header() {
             className="text-sm font-medium transition-all duration-300 hover:text-navy-primary hover:scale-105"
           >
             Expert Consultancy
+          </button>
+
+          <button 
+            onClick={() => handleNavigation('/amc')}
+            className="text-sm font-medium transition-all duration-300 hover:text-navy-primary hover:scale-105"
+          >
+            AMC
           </button>
 
           <DropdownMenu>
@@ -184,6 +191,13 @@ export function Header() {
               Expert Consultancy
             </button>
 
+            <button 
+              onClick={() => handleNavigation('/amc')}
+              className="text-sm font-medium transition-all duration-200 hover:text-navy-primary hover:bg-navy-primary/5 text-left px-3 py-2 rounded-md"
+            >
+              AMC
+            </button>
+
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground px-2">More</p>
               <button 
@@ -212,4 +226,3 @@ export function Header() {
     </header>
   );
 }
-

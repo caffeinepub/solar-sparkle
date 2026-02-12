@@ -1,4 +1,3 @@
-import { Heart } from 'lucide-react';
 import { SiFacebook, SiX, SiLinkedin, SiInstagram } from 'react-icons/si';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -15,7 +14,7 @@ export function Footer() {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
               <img 
-                src="/assets/generated/solar-sparkle-logo-transparent.dim_200x200.png" 
+                src="/assets/generated/amc-logo-transparent.dim_512x512.png" 
                 alt="Solar Sparkle Logo" 
                 className="h-10 w-10"
               />
@@ -139,28 +138,45 @@ export function Footer() {
                   Solar Water Pump
                 </button>
               </li>
+              <li>
+                <button 
+                  onClick={() => navigate({ to: '/amc' })}
+                  className="text-muted-foreground hover:text-navy-primary transition-colors"
+                >
+                  AMC
+                </button>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Contact</h3>
+            <h3 className="font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Head Office: Kanpur, India</li>
-              <li>+91 81124 38846</li>
-              <li>Mon - Sat, 10 AM - 6 PM</li>
-              <li>official@solarsparkle.in</li>
+              <li>Kanpur, Uttar Pradesh</li>
+              <li>
+                <a href="tel:+918112438846" className="hover:text-navy-primary transition-colors">
+                  +91 81124 38846
+                </a>
+              </li>
+              <li>
+                <a href="mailto:official@solarsparkle.in" className="hover:text-navy-primary transition-colors">
+                  official@solarsparkle.in
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p className="flex items-center gap-1">
-            © 2026. Built with <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+        <div className="mt-12 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-muted-foreground text-center md:text-left">
+            © {new Date().getFullYear()} Solar Sparkle. All rights reserved.
           </p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-navy-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-navy-primary transition-colors">Terms of Service</a>
-          </div>
+          <button
+            onClick={() => navigate({ to: '/admin/submissions' })}
+            className="text-xs text-muted-foreground/60 hover:text-navy-primary transition-colors"
+          >
+            Admin
+          </button>
         </div>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Handshake, Loader2 } from 'lucide-react';
+import { Handshake, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,9 +7,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubmitPartnerRegistration } from '@/hooks/useQueries';
 import { toast } from 'sonner';
+import { exportPartnerToSheets, type PartnerFormData } from '@/lib/googleSheetsExport';
+import { isPartnerExportConfigured } from '@/config/googleSheetsConfig';
 
 export function TrustedPartnerPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PartnerFormData>({
     name: '',
     companyName: '',
     phoneNumber: '',
@@ -17,8 +19,30 @@ export function TrustedPartnerPage() {
     location: '',
     businessDetails: '',
   });
+  const [isExportingToSheets, setIsExportingToSheets] = useState(false);
+  const [lastSubmittedData, setLastSubmittedData] = useState<PartnerFormData | null>(null);
 
   const submitMutation = useSubmitPartnerRegistration();
+
+  const handleSheetsExport = async (data: PartnerFormData) => {
+    setIsExportingToSheets(true);
+    const result = await exportPartnerToSheets(data);
+    setIsExportingToSheets(false);
+
+    if (!result.success) {
+      if (result.configMissing) {
+        console.warn('Google Sheets export not configured');
+      } else {
+        toast.error('Failed to export to Google Sheets', {
+          description: result.error || 'Please try again or contact support.',
+          action: {
+            label: 'Retry',
+            onClick: () => handleSheetsExport(data),
+          },
+        });
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,8 +53,16 @@ export function TrustedPartnerPage() {
     }
 
     try {
+      // Submit to backend first
       await submitMutation.mutateAsync(formData);
+      
+      // Store the submitted data for potential retry
+      setLastSubmittedData({ ...formData });
+      
+      // Show success message
       toast.success('Partner registration submitted successfully! Our team will contact you soon.');
+      
+      // Clear form
       setFormData({
         name: '',
         companyName: '',
@@ -39,8 +71,19 @@ export function TrustedPartnerPage() {
         location: '',
         businessDetails: '',
       });
+
+      // Export to Google Sheets after successful backend submission
+      if (isPartnerExportConfigured()) {
+        await handleSheetsExport(lastSubmittedData || formData);
+      }
     } catch (error) {
       toast.error('Failed to submit form. Please try again.');
+    }
+  };
+
+  const handleRetryExport = () => {
+    if (lastSubmittedData) {
+      handleSheetsExport(lastSubmittedData);
     }
   };
 
@@ -157,17 +200,39 @@ export function TrustedPartnerPage() {
                 <Button 
                   type="submit" 
                   className="w-full bg-navy-primary hover:bg-navy-primary/90 text-white"
-                  disabled={submitMutation.isPending}
+                  disabled={submitMutation.isPending || isExportingToSheets}
                 >
-                  {submitMutation.isPending ? (
+                  {submitMutation.isPending || isExportingToSheets ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
+                      {submitMutation.isPending ? 'Submitting...' : 'Exporting...'}
                     </>
                   ) : (
                     'Submit Partner Registration'
                   )}
                 </Button>
+
+                {lastSubmittedData && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={handleRetryExport}
+                    disabled={isExportingToSheets}
+                  >
+                    {isExportingToSheets ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Retrying Export...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Retry Google Sheets Export
+                      </>
+                    )}
+                  </Button>
+                )}
               </form>
             </div>
 
@@ -202,18 +267,7 @@ export function TrustedPartnerPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Get access to professional marketing materials, product catalogs, and sales tools.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quality Products</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>
-                    Offer your customers premium solar solutions backed by industry-leading warranties.
+                    Get access to professional marketing materials, product catalogs, and sales support resources.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -224,7 +278,7 @@ export function TrustedPartnerPage() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Expand your business with a trusted brand and tap into the growing solar energy market.
+                    Expand your business with our proven solar solutions and benefit from our brand reputation.
                   </CardDescription>
                 </CardContent>
               </Card>

@@ -18,6 +18,8 @@ import { SolarWaterPumpPage } from './pages/SolarWaterPumpPage';
 import { ExpertConsultancyPage } from './pages/ExpertConsultancyPage';
 import { TrustedPartnerPage } from './pages/TrustedPartnerPage';
 import { CareersPage } from './pages/CareersPage';
+import { AmcPage } from './pages/AmcPage';
+import { AdminSubmissionsPage } from './pages/AdminSubmissionsPage';
 
 const queryClient = new QueryClient();
 
@@ -112,6 +114,18 @@ const careersRoute = createRoute({
   component: CareersPage,
 });
 
+const amcRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/amc',
+  component: AmcPage,
+});
+
+const adminSubmissionsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/submissions',
+  component: AdminSubmissionsPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   residentialSolarRoute,
@@ -125,6 +139,8 @@ const routeTree = rootRoute.addChildren([
   expertConsultancyRoute,
   trustedPartnerRoute,
   careersRoute,
+  amcRoute,
+  adminSubmissionsRoute,
 ]);
 
 const router = createRouter({ routeTree });

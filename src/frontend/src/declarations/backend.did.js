@@ -20,6 +20,16 @@ export const _CaffeineStorageRefillResult = IDL.Record({
   'topped_up_amount' : IDL.Opt(IDL.Nat),
 });
 export const Time = IDL.Int;
+export const AmcEnquiry = IDL.Record({
+  'id' : IDL.Nat,
+  'status' : IDL.Text,
+  'clientName' : IDL.Text,
+  'email' : IDL.Text,
+  'systemDetails' : IDL.Text,
+  'timestamp' : Time,
+  'phoneNumber' : IDL.Text,
+  'location' : IDL.Text,
+});
 export const ConsultancyForm = IDL.Record({
   'id' : IDL.Nat,
   'status' : IDL.Text,
@@ -41,6 +51,12 @@ export const PartnerRegistration = IDL.Record({
   'phoneNumber' : IDL.Text,
   'location' : IDL.Text,
 });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 
 export const idlService = IDL.Service({
   '_caffeineStorageBlobIsLive' : IDL.Func(
@@ -69,23 +85,41 @@ export const idlService = IDL.Service({
       [],
     ),
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
-  'getAllConsultancyForms' : IDL.Func(
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'adminGetAllAmcEnquiries' : IDL.Func([], [IDL.Vec(AmcEnquiry)], ['query']),
+  'adminGetAllConsultancyForms' : IDL.Func(
       [],
       [IDL.Vec(ConsultancyForm)],
       ['query'],
     ),
-  'getAllOfferings' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
-  'getAllPartnerRegistrations' : IDL.Func(
+  'adminGetAllPartnerRegistrations' : IDL.Func(
       [],
       [IDL.Vec(PartnerRegistration)],
       ['query'],
     ),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getAllOfferings' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
   'getAllSolutions' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+  'getAmcEnquiryById' : IDL.Func([IDL.Nat], [AmcEnquiry], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getConsultancyFormById' : IDL.Func([IDL.Nat], [ConsultancyForm], ['query']),
   'getPartnerRegistrationById' : IDL.Func(
       [IDL.Nat],
       [PartnerRegistration],
       ['query'],
+    ),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'submitAmcEnquiry' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Nat],
+      [],
     ),
   'submitConsultancyForm' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
@@ -97,6 +131,7 @@ export const idlService = IDL.Service({
       [IDL.Nat],
       [],
     ),
+  'updateAmcEnquiryStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   'updateConsultancyStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   'updatePartnerStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
 });
@@ -116,6 +151,16 @@ export const idlFactory = ({ IDL }) => {
     'topped_up_amount' : IDL.Opt(IDL.Nat),
   });
   const Time = IDL.Int;
+  const AmcEnquiry = IDL.Record({
+    'id' : IDL.Nat,
+    'status' : IDL.Text,
+    'clientName' : IDL.Text,
+    'email' : IDL.Text,
+    'systemDetails' : IDL.Text,
+    'timestamp' : Time,
+    'phoneNumber' : IDL.Text,
+    'location' : IDL.Text,
+  });
   const ConsultancyForm = IDL.Record({
     'id' : IDL.Nat,
     'status' : IDL.Text,
@@ -137,6 +182,12 @@ export const idlFactory = ({ IDL }) => {
     'phoneNumber' : IDL.Text,
     'location' : IDL.Text,
   });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   
   return IDL.Service({
     '_caffeineStorageBlobIsLive' : IDL.Func(
@@ -165,18 +216,24 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
-    'getAllConsultancyForms' : IDL.Func(
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'adminGetAllAmcEnquiries' : IDL.Func([], [IDL.Vec(AmcEnquiry)], ['query']),
+    'adminGetAllConsultancyForms' : IDL.Func(
         [],
         [IDL.Vec(ConsultancyForm)],
         ['query'],
       ),
-    'getAllOfferings' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
-    'getAllPartnerRegistrations' : IDL.Func(
+    'adminGetAllPartnerRegistrations' : IDL.Func(
         [],
         [IDL.Vec(PartnerRegistration)],
         ['query'],
       ),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getAllOfferings' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'getAllSolutions' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+    'getAmcEnquiryById' : IDL.Func([IDL.Nat], [AmcEnquiry], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getConsultancyFormById' : IDL.Func(
         [IDL.Nat],
         [ConsultancyForm],
@@ -186,6 +243,18 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat],
         [PartnerRegistration],
         ['query'],
+      ),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'submitAmcEnquiry' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Nat],
+        [],
       ),
     'submitConsultancyForm' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
@@ -197,6 +266,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat],
         [],
       ),
+    'updateAmcEnquiryStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
     'updateConsultancyStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
     'updatePartnerStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   });

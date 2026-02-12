@@ -89,20 +89,6 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface ConsultancyForm {
-    id: bigint;
-    status: string;
-    name: string;
-    requirementMessage: string;
-    email: string;
-    timestamp: Time;
-    phoneNumber: string;
-    location: string;
-}
-export interface _CaffeineStorageCreateCertificateResult {
-    method: string;
-    blob_hash: string;
-}
 export type Time = bigint;
 export interface PartnerRegistration {
     id: bigint;
@@ -115,12 +101,44 @@ export interface PartnerRegistration {
     phoneNumber: string;
     location: string;
 }
+export interface _CaffeineStorageRefillInformation {
+    proposed_top_up_amount?: bigint;
+}
+export interface AmcEnquiry {
+    id: bigint;
+    status: string;
+    clientName: string;
+    email: string;
+    systemDetails: string;
+    timestamp: Time;
+    phoneNumber: string;
+    location: string;
+}
+export interface _CaffeineStorageCreateCertificateResult {
+    method: string;
+    blob_hash: string;
+}
+export interface ConsultancyForm {
+    id: bigint;
+    status: string;
+    name: string;
+    requirementMessage: string;
+    email: string;
+    timestamp: Time;
+    phoneNumber: string;
+    location: string;
+}
+export interface UserProfile {
+    name: string;
+}
 export interface _CaffeineStorageRefillResult {
     success?: boolean;
     topped_up_amount?: bigint;
 }
-export interface _CaffeineStorageRefillInformation {
-    proposed_top_up_amount?: bigint;
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
 }
 export interface backendInterface {
     _caffeineStorageBlobIsLive(hash: Uint8Array): Promise<boolean>;
@@ -129,18 +147,29 @@ export interface backendInterface {
     _caffeineStorageCreateCertificate(blobHash: string): Promise<_CaffeineStorageCreateCertificateResult>;
     _caffeineStorageRefillCashier(refillInformation: _CaffeineStorageRefillInformation | null): Promise<_CaffeineStorageRefillResult>;
     _caffeineStorageUpdateGatewayPrincipals(): Promise<void>;
-    getAllConsultancyForms(): Promise<Array<ConsultancyForm>>;
+    _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
+    adminGetAllAmcEnquiries(): Promise<Array<AmcEnquiry>>;
+    adminGetAllConsultancyForms(): Promise<Array<ConsultancyForm>>;
+    adminGetAllPartnerRegistrations(): Promise<Array<PartnerRegistration>>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     getAllOfferings(): Promise<Array<string>>;
-    getAllPartnerRegistrations(): Promise<Array<PartnerRegistration>>;
     getAllSolutions(): Promise<Array<string>>;
+    getAmcEnquiryById(id: bigint): Promise<AmcEnquiry>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
     getConsultancyFormById(id: bigint): Promise<ConsultancyForm>;
     getPartnerRegistrationById(id: bigint): Promise<PartnerRegistration>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    submitAmcEnquiry(clientName: string, phoneNumber: string, email: string, location: string, systemDetails: string): Promise<bigint>;
     submitConsultancyForm(name: string, phoneNumber: string, email: string, location: string, requirementMessage: string): Promise<bigint>;
     submitPartnerRegistration(name: string, companyName: string, phoneNumber: string, email: string, location: string, businessDetails: string): Promise<bigint>;
+    updateAmcEnquiryStatus(id: bigint, status: string): Promise<void>;
     updateConsultancyStatus(id: bigint, status: string): Promise<void>;
     updatePartnerStatus(id: bigint, status: string): Promise<void>;
 }
-import type { _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
+import type { UserProfile as _UserProfile, UserRole as _UserRole, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _caffeineStorageBlobIsLive(arg0: Uint8Array): Promise<boolean> {
@@ -227,17 +256,73 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getAllConsultancyForms(): Promise<Array<ConsultancyForm>> {
+    async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.getAllConsultancyForms();
+                const result = await this.actor._initializeAccessControlWithSecret(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getAllConsultancyForms();
+            const result = await this.actor._initializeAccessControlWithSecret(arg0);
+            return result;
+        }
+    }
+    async adminGetAllAmcEnquiries(): Promise<Array<AmcEnquiry>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.adminGetAllAmcEnquiries();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.adminGetAllAmcEnquiries();
+            return result;
+        }
+    }
+    async adminGetAllConsultancyForms(): Promise<Array<ConsultancyForm>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.adminGetAllConsultancyForms();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.adminGetAllConsultancyForms();
+            return result;
+        }
+    }
+    async adminGetAllPartnerRegistrations(): Promise<Array<PartnerRegistration>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.adminGetAllPartnerRegistrations();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.adminGetAllPartnerRegistrations();
+            return result;
+        }
+    }
+    async assignCallerUserRole(arg0: Principal, arg1: UserRole): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n8(this._uploadFile, this._downloadFile, arg1));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n8(this._uploadFile, this._downloadFile, arg1));
             return result;
         }
     }
@@ -255,20 +340,6 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getAllPartnerRegistrations(): Promise<Array<PartnerRegistration>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getAllPartnerRegistrations();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getAllPartnerRegistrations();
-            return result;
-        }
-    }
     async getAllSolutions(): Promise<Array<string>> {
         if (this.processError) {
             try {
@@ -281,6 +352,48 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getAllSolutions();
             return result;
+        }
+    }
+    async getAmcEnquiryById(arg0: bigint): Promise<AmcEnquiry> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAmcEnquiryById(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAmcEnquiryById(arg0);
+            return result;
+        }
+    }
+    async getCallerUserProfile(): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserProfile();
+                return from_candid_opt_n10(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserProfile();
+            return from_candid_opt_n10(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getCallerUserRole(): Promise<UserRole> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserRole();
+                return from_candid_UserRole_n11(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserRole();
+            return from_candid_UserRole_n11(this._uploadFile, this._downloadFile, result);
         }
     }
     async getConsultancyFormById(arg0: bigint): Promise<ConsultancyForm> {
@@ -311,6 +424,62 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUserProfile(arg0);
+                return from_candid_opt_n10(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUserProfile(arg0);
+            return from_candid_opt_n10(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async isCallerAdmin(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.isCallerAdmin();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.isCallerAdmin();
+            return result;
+        }
+    }
+    async saveCallerUserProfile(arg0: UserProfile): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveCallerUserProfile(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveCallerUserProfile(arg0);
+            return result;
+        }
+    }
+    async submitAmcEnquiry(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.submitAmcEnquiry(arg0, arg1, arg2, arg3, arg4);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.submitAmcEnquiry(arg0, arg1, arg2, arg3, arg4);
+            return result;
+        }
+    }
     async submitConsultancyForm(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string): Promise<bigint> {
         if (this.processError) {
             try {
@@ -336,6 +505,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.submitPartnerRegistration(arg0, arg1, arg2, arg3, arg4, arg5);
+            return result;
+        }
+    }
+    async updateAmcEnquiryStatus(arg0: bigint, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateAmcEnquiryStatus(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateAmcEnquiryStatus(arg0, arg1);
             return result;
         }
     }
@@ -368,8 +551,14 @@ export class Backend implements backendInterface {
         }
     }
 }
+function from_candid_UserRole_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n12(_uploadFile, _downloadFile, value);
+}
 function from_candid__CaffeineStorageRefillResult_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: __CaffeineStorageRefillResult): _CaffeineStorageRefillResult {
     return from_candid_record_n5(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
+    return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [boolean]): boolean | null {
     return value.length === 0 ? null : value[0];
@@ -389,6 +578,18 @@ function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint
         topped_up_amount: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.topped_up_amount))
     };
 }
+function from_candid_variant_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+}): UserRole {
+    return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
+}
+function to_candid_UserRole_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
+    return to_candid_variant_n9(_uploadFile, _downloadFile, value);
+}
 function to_candid__CaffeineStorageRefillInformation_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _CaffeineStorageRefillInformation): __CaffeineStorageRefillInformation {
     return to_candid_record_n3(_uploadFile, _downloadFile, value);
 }
@@ -403,6 +604,21 @@ function to_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8A
     return {
         proposed_top_up_amount: value.proposed_top_up_amount ? candid_some(value.proposed_top_up_amount) : candid_none()
     };
+}
+function to_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+} {
+    return value == UserRole.admin ? {
+        admin: null
+    } : value == UserRole.user ? {
+        user: null
+    } : value == UserRole.guest ? {
+        guest: null
+    } : value;
 }
 export interface CreateActorOptions {
     agent?: Agent;
